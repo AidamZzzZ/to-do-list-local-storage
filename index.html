@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Lista de tareas donde puedes buscar tareas, agregar, actualizar y editar tareas, utilizando localstorage.">
+    <meta name="robots" content="index, follow">
+    <title>Lista de tareas</title>
+    <link rel="stylesheet" href="./src/style.css">
+    <script src="https://kit.fontawesome.com/54b6f92c9a.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+      
+      <h1>Lista de Tareas</h1>
+
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <label for="search-task"></label>
+        <input type="search" id="search-task" name="search-task" class="search-task" placeholder="Buscar tareas...">
+      </div>
+
+      <div class="add-task-container">
+        <label for="add-new-task"></label>
+        <input type="text" id="add-new-task" name="add-new-task" class="add-new-task" placeholder="Agregar nueva tarea...">
+
+        <button class="btn-add-task"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      
+      <p class="msg">No hay tareas. ¡Agrega una!</p>
+
+      <ul class="tasks-list">
+      </ul>
+
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
