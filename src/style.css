@@ -117,3 +117,28 @@ h1 {
   color: var(--tercary-color);
   margin: 10px;
 }
+
+.filter {
+  display: none;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  list-style: none;
+}
+
+.task {
+/*  display: flex;*/
+  align-items: center;
+  justify-content: space-between;
+}
+
+.done-btn,
+.edit-btn,
+.delete-btn {
+  float: right;
+}
+
+
