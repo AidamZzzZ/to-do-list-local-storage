@@ -3,9 +3,13 @@ const addTaskbutton = document.querySelector(".btn-add-task");
 const tasksList = document.querySelector(".tasks-list");
 const msgEl = document.querySelector(".msg");
 
-const tasks = [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-let taskToLocaleStorage = JSON.parse(localStorage.getItem("tasks")) || [];
+
+window.onload = function() {
+	noTaskAddTask();
+	renderTask(tasks);
+}
 
 addTaskbutton.addEventListener("click", () => addTask());
 
@@ -30,14 +34,13 @@ function addTask() {
 	tasks.push({ taskName: task, complete: false });
 	addNewTaskInput.value = "";
 
-	localStorage.setItem('tasks', JSON.stringify(task))
-	console.log(taskToLocaleStorage)
+	localStorage.setItem('tasks', JSON.stringify(tasks))
 
 	noTaskAddTask();
-	renderTask();
+	renderTask(tasks);
 };
 
-function renderTask() {
+function renderTask(tasks) {
 	tasksList.innerHTML = "";
 	tasks.forEach((task, index) => {	
 		const li = document.createElement("li");
@@ -46,13 +49,13 @@ function renderTask() {
 		labelCheckbox.setAttribute("for", "check-input");
 		labelCheckbox.classList.add("custom-checkbox")
 
-		const checkbox = toggleCheckbox(task, nameTask);
+		const checkbox = toggleCheckbox(task, index, nameTask);
 		checkbox.name = "check-input";
 
 		task.complete ? nameTask.classList.add("check") : nameTask.classList.remove("check");
 
 		const deleteBtn = deleteButton(index);
-		const doneBtn = doneButton(nameTask, index);
+		const doneBtn = doneButton(nameTask, nameTask, index);
 		const editBtn = editButton(nameTask, doneBtn);
 
 		nameTask.textContent = task.taskName;
@@ -86,7 +89,7 @@ function editButton(nameTask, doneBtn) {
 	return button;
 };
 
-function doneButton(nameTask, index) {
+function doneButton(task, nameTask, index) {
 	const button = document.createElement("button");
 	button.innerHTML = `
 		<i class="fa-solid fa-check"></i>
@@ -99,12 +102,14 @@ function doneButton(nameTask, index) {
 		nameTask.classList.remove("edit")
 		button.classList.add("filter");
 		tasks[index].taskName = nameTask.textContent;
+
+		localStorage.setItem("tasks", JSON.stringify(tasks))
 	});
 
 	return button;
 };
 
-function deleteButton(index) {
+function deleteButton(task, index) {
 	const button = document.createElement("button");
 	button.innerHTML = `
 		<i class="fa-solid fa-trash"></i>
@@ -113,23 +118,29 @@ function deleteButton(index) {
 	button.classList.add("delete-btn")
 	button.addEventListener("click", (e) => {
 		const value = e.target.parentElement;
-		tasks.splice(tasks[index], 1);
 		tasksList.removeChild(value);
+		tasks.splice(index, 1);
+
+		localStorage.setItem("tasks", JSON.stringify(tasks))	
+
 		noTaskAddTask();
 	});
 
 	return button;
 };
 
-function toggleCheckbox(task, nameTask) {
+function toggleCheckbox(task, index, nameTask) {
 	const checkbox = document.createElement("input");
 	checkbox.type = "checkbox";
 	checkbox.checked = task.complete;
 	checkbox.classList.add("check-input");
 
 	checkbox.addEventListener("change", () => {
-		task.complete = checkbox.checked;
-		task.complete ? nameTask.classList.add("check") : nameTask.classList.remove("check");
+		tasks[index].complete = checkbox.checked;
+		localStorage.setItem("tasks", JSON.stringify(tasks))
+
+		tasks[index].complete ? nameTask.classList.add("check") : nameTask.classList.remove("check");
+
 	});
 
 	return checkbox;
